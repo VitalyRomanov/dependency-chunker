@@ -1,1 +1,1 @@
-python main.py /Volumes/External/datasets/Language/Chunking/ru_with_morph_and_dep/train_chunk_dep.txt /Volumes/External/datasets/Language/Chunking/ru_with_morph_and_dep/test_chunk_dep.txt
+python main.py data/ru_with_morph_and_dep/train_chunk_dep.txt data/ru_with_morph_and_dep/test_chunk_dep.txt
