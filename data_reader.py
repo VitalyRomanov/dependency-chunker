@@ -2,7 +2,7 @@ from Token2id import Token2id
 from Label2id import Label2id
 import tensorflow as tf
 import numpy as np
-from sklearn.preprocessing import OneHotEncoder
+#from sklearn.preprocessing import OneHotEncoder
 
 def read_data(data_path):
 
@@ -141,6 +141,11 @@ def read_token(line):
     head = parts[3]
     dep_tag = parts[4]
     morph = parts[5:-1]
+    if len(token) > 3:
+        morph.append("<"+token[:2])
+        morph.append(token[-2:]+">")
+    else:
+        morph.append("token")
     return (pos, position+"_pos", head+"_head", dep_tag, morph), chunk_tag
     # try addign head properties here
     # return (token, pos, position, head, dep_tag, morph), chunk_tag
@@ -160,8 +165,8 @@ class DataReader:
 
         self.train_sents = train_sents#[:1000]
         self.train_chunks = train_chunks#[:1000]
-        self.test_sents = test_sents#[:100]
-        self.test_chunks = test_chunks#[:100]
+        self.test_sents = test_sents[:2000]
+        self.test_chunks = test_chunks[:2000]
 
         # map every unique token feature to a unique id
         self.token2id = Token2id()

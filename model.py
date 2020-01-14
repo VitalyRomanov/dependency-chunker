@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 default_params = {
-    "d_win": 5,
+    "d_win": 7,
     "param_dim": 500,
     "h1_dim": 200,
     "h2_dim": 100
@@ -48,19 +48,23 @@ def assemble_model(seq_len,
                                            name="inputs_unrolled")
 
         # create embedding for every token feature
-        param_emb = tf.get_variable("W_param",
-                                    shape=(n_params, param_dim),
-                                    dtype=tf.float32)
+        # param_emb = tf.get_variable("W_param",
+        #                             shape=(n_params, param_dim),
+        #                             dtype=tf.float32)
 
         # Embed every token with a non-linearity
         # words_embedded_unrolled = tf.nn.relu(
         #     tf.sparse_tensor_dense_matmul(input_unrolled,
         #                                   param_emb)
         # )
-        words_embedded_unrolled = tf.nn.relu(
-            tf.matmul(input_unrolled,
-                      param_emb)
-        )
+        # words_embedded_unrolled = tf.nn.relu(
+        #     tf.matmul(input_unrolled,
+        #               param_emb)
+        # )
+        words_embedded_unrolled = tf.layers.dense(input_unrolled,
+                                                    param_dim,
+                                                    activation=None,
+                                                    name="non_lin_emb")
 
         # reshape back to (None * seq_len, n_params)
         words_embedded = tf.reshape(words_embedded_unrolled, shape=(-1,seq_len, param_dim), name="embedded_sents")

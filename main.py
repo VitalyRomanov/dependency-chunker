@@ -13,7 +13,7 @@ from model import Chunker
 
 BATCH_SIZE = 128
 MAX_SEQ_LEN = 100
-EPOCHS = 5
+EPOCHS = 100
 
 
 data_p = sys.argv[1]
@@ -51,9 +51,9 @@ with tf.Session() as sess:
                     terminals['labels']: pos_tags,
                     terminals['lengths']: lens
                 })
-            print("Batch {}\r".format(ind))
+            print("Batch {}\r".format(ind), end="")
 
-
+            # if ind % 10 == 0:
         sentences, pos_tags, lens = hold_out
 
         loss_val, acc_val, am = sess.run([terminals['loss'], terminals['accuracy'], terminals['argmax']], {
@@ -61,5 +61,5 @@ with tf.Session() as sess:
             terminals['labels']: pos_tags,
             terminals['lengths']: lens
         })
-        print("Epoch {}, loss {}, acc {}".format(e, loss_val, acc_val))
+        print("\nEpoch {}, loss {}, acc {}".format(e, loss_val, acc_val))
 
